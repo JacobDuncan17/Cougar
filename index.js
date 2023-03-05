@@ -2,12 +2,11 @@ const inquirer = require ('inquirer');
 const fs = require ('fs');
 const shapes = require('./lib/shapes');
 class logoGenerator {
-    constructor () {
-        this.characters = '';
-        this.color = '';
-        this.shape = '';
-        this.shapeColor = '';
-        this.promptUser();
+    constructor (characters, color, shape, shapeColor) {
+        this.characters = characters;
+        this.color = color;
+        this.shape = shape;
+        this.shapeColor = shapeColor;
     }
   async promptUser() {
     const answers = await inquirer.prompt([
@@ -36,10 +35,20 @@ class logoGenerator {
         name: 'shapeColor',
         message: 'Enter shape color (Can be keyword or hexadecimal)',
       },
-    ]);
-    this.characters = answers.characters;
-    this.color = answers.color;
-    this.shape = answers.shape;
-    this.shapeColor = answers.shapeColor;
+    ])
+    .then((answers) => {
+        const svg = `
+        ${shapes[answers.shape](answers.color, answers.shapeColor, answers.characters)}
+        `;
+        fs.writeFile('logo.svg', svg, (err) => {
+          if (err) throw err;
+          console.log('Generated logo.svg');
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 }
+const generator = new logoGenerator();
+generator.promptUser();

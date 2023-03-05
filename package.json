@@ -1,0 +1,25 @@
+{
+  "name": "cougar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JacobDuncan17/Cougar.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JacobDuncan17/Cougar/issues"
+  },
+  "homepage": "https://github.com/JacobDuncan17/Cougar#readme",
+  "dependencies": {
+    "jest": "^29.4.3"
+  }
+}
