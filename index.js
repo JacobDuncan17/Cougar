@@ -28,7 +28,7 @@ class logoGenerator {
         type: 'list',
         name: 'shape',
         message: 'Choose a shape:',
-        choices: Object.keys(shapes),
+        choices: ['Cirlce', 'Triangle', 'Square'],
       },
       {
         type: 'input',
