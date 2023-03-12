@@ -1,13 +1,7 @@
 const inquirer = require ('inquirer');
 const fs = require ('fs');
-const shapes = require('./lib/shapes');
+const { Circle, Triangle, Square } = require('./lib/shapes');
 class logoGenerator {
-    constructor (characters, color, shape, shapeColor) {
-        this.characters = characters;
-        this.color = color;
-        this.shape = shape;
-        this.shapeColor = shapeColor;
-    }
   async promptUser() {
     const answers = await inquirer.prompt([
       {
@@ -16,30 +10,36 @@ class logoGenerator {
         message: 'Enter up to three characters',
         validate: function (value) {
           var valid = value.length <= 3;
-          return valid || 'Please enter no more than 3 characters';
+          return valid || 'Please enter no more than 3 characters:';
         },
       },
       {
         type: 'input',
         name: 'color',
-        message: 'Enter text color (Can be keyword or hexadecimal)',
+        message: 'Enter text color (Can be keyword or hexadecimal:)',
       },
       {
         type: 'list',
         name: 'shape',
         message: 'Choose a shape:',
-        choices: ['Cirlce', 'Triangle', 'Square'],
+        choices: [
+          { name: 'Circle', value: Circle },
+          { name: 'Triangle', value: Triangle },
+          { name: 'Square', value: Square },
+        ],
       },
       {
         type: 'input',
         name: 'shapeColor',
-        message: 'Enter shape color (Can be keyword or hexadecimal)',
+        message: 'Enter shape color (Can be keyword or hexadecimal):',
       },
     ])
     .then((answers) => {
-        const svg = `
-        ${shapes[answers.shape](answers.color, answers.shapeColor, answers.characters)}
-        `;
+      const ShapeClass = answers.shape
+
+      const shapeInstance = new ShapeClass(answers.color, answers.shapeColor, answers.characters);
+
+        const svg = shapeInstance.getSvg();
         fs.writeFile('logo.svg', svg, (err) => {
           if (err) throw err;
           console.log('Generated logo.svg');
